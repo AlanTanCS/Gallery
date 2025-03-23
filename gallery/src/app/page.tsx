@@ -46,13 +46,14 @@ function ScrollForMore() {
 
 function Pictures() {
 
-  const scrollThreshold = 2000; // Distance this follows the user
 
   const [screenWidth, setScreenWidth] = useState(0);
   const [screenHeight, setScreenHeight] = useState(0);
   const [topOfSite, setTopOfSite] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const { scrollY } = useScroll()
+
+  const scrollThreshold = screenHeight; // Distance this follows the user
 
   // Update window size on resize
   useEffect(() => {
@@ -91,7 +92,6 @@ function Pictures() {
         y: yRange,
       }}
     >
-
       <div className="bg-amber-50 h-full" key={topOfSite ? "reset" : "no-reset"}>
 
         <motion.div
@@ -145,10 +145,6 @@ function Pictures() {
           className="absolute bottom-[10%]">
         </motion.div>
 
-        {/* Text */}
-        {/* {text} */}
-        {/* <RevealText text={text} boxColor="white"></RevealText> */}
-
       </div>
     </motion.div>
   )
@@ -160,11 +156,11 @@ export default function Home() {
     Where Creativity Meets Vision
   </span>
 
-  // useEffect(() => {
-  //   window.onbeforeunload = function () {
-  //     window.scrollTo(0, 0);
-  //   }
-  // })
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
+  })
 
   return (
 
@@ -173,7 +169,7 @@ export default function Home() {
       {/* Initial page of what the user sees */}
       <div className="flex flex-col w-full h-[calc(100vh_-_68.4px)]">
         <div className="flex-1 flex items-center justify-center">
-          <RevealText text={HomeText} boxColor="white"></RevealText>
+          <RevealText text={HomeText} boxColor="amber-50"></RevealText>
         </div>
       </div>
 
@@ -182,11 +178,6 @@ export default function Home() {
       <div className="h-1000">
         <Pictures />
       </div>
-
-      {/* {text} */}
-      {/* <div className="h-1000">
-      </div> */}
-
 
       <ScrollForMore />
     </div>

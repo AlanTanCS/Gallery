@@ -9,7 +9,7 @@ interface RevealTextProps {
     offset?: number;
 }
 
-export default function RevealText({ text, boxColor, trigger, offset = 0 }: RevealTextProps) {
+export default function RevealText({ text, boxColor = "white", trigger, offset = 0 }: RevealTextProps) {
     return (
         <div className="overflow-hidden h-20">
             <motion.div
@@ -30,6 +30,7 @@ export default function RevealText({ text, boxColor, trigger, offset = 0 }: Reve
                     initial="onScreen"
                     animate={trigger ? "onScreen" : "offScreen"}
                     className={`absolute top-1/2 left-1/2 w-300 h-20 bg-${boxColor} -translate-x-1/2 -translate-y-1/2`}></motion.div>
+                {/* // className="absolute top-1/2 left-1/2 w-300 h-20 bg-black -translate-x-1/2 -translate-y-1/2"></motion.div> */}
 
                 {/* Text */}
 
