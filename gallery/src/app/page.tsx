@@ -78,7 +78,6 @@ function ScrollForMore() {
   )
 }
 
-
 function Pictures() {
 
   const scrollThreshold = 2000; // Distance this follows the user
@@ -86,6 +85,7 @@ function Pictures() {
   const [screenWidth, setScreenWidth] = useState(0);
   const [screenHeight, setScreenHeight] = useState(0);
   const [topOfSite, setTopOfSite] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const { scrollY } = useScroll()
 
   // Update window size on resize
@@ -105,11 +105,9 @@ function Pictures() {
 
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    console.log(latest);
     if (latest === 0) {
-      setTopOfSite(true); // Reset when at the top
-    } else {
-      setTopOfSite(false); // Do not reset while scrolling down
+      setTopOfSite(!topOfSite);
+      setIsVisible(false);
     }
   })
 
@@ -124,40 +122,54 @@ function Pictures() {
         y: yRange,
       }}
     >
-      <div className="bg-amber-50 h-full pt-[100vh]" key={topOfSite ? "reset" : "no-reset"}>
+
+      <div className="bg-amber-50 h-full" key={topOfSite ? "reset" : "no-reset"}>
         <motion.div
           variants={{
-            outFrame: { opacity: 0.5, x: -400, rotate: 0 },
-            inFrame: { opacity: 1, x: 700, y: -screenHeight * 0.4, rotate: 30 },
+            outFrame: { opacity: 1, x: "-100%", y: "100%", rotate: 0 },
+            inFrame: { opacity: 1, x: "-10%", y: "30%", rotate: 30, transition: { duration: 0.5, type: "spring", stiffness: 70 } },
           }}
-          whileInView={"inFrame"}
+          initial="outFrame"
+          animate={isVisible ? "inFrame" : "outFrame"}
           viewport={{ once: true }}
-          className="h-full bg-amber-500"
-        >
-          <Image src={'/pic3.jpg'} alt="My img" width={300} height={200} className="w-auto" />
-        </motion.div>
-        <motion.div
-          variants={{
-            outFrame: { opacity: 0.5, x: -400, rotate: 0 },
-            inFrame: { opacity: 1, x: 500, y: -screenHeight * 0.5, rotate: 20 },
-          }}
-          whileInView={"inFrame"}
-          viewport={{ once: true }}
-          className="h-full bg-amber-500"
+          className="flex justify-center h-[50%]"
         >
           <Image src={'/pic1.jpg'} alt="My img" width={300} height={200} className="w-auto" />
         </motion.div>
+
         <motion.div
           variants={{
-            outFrame: { opacity: 0.5, x: -400, rotate: 0 },
-            inFrame: { opacity: 1, x: 300, rotate: 10, y: -screenHeight * 0.5 },
+            outFrame: { opacity: 1, x: "-100%", y: "100%", rotate: 0 },
+            inFrame: { opacity: 1, x: "-20%", y: "-60%", rotate: 20, transition: { duration: 0.5, delay: 0.05, type: "spring", stiffness: 70 } },
           }}
-          whileInView={"inFrame"}
+          initial="outFrame"
+          animate={isVisible ? "inFrame" : "outFrame"}
           viewport={{ once: true }}
-          className="h-full bg-amber-500"
+          className="flex justify-center h-[50%]"
         >
           <Image src={'/pic2.jpg'} alt="My img" width={300} height={200} className="w-auto" />
         </motion.div>
+
+
+        <motion.div
+          variants={{
+            outFrame: { opacity: 1, x: "-100%", y: "100%", rotate: 0 },
+            inFrame: { opacity: 1, x: "-30%", y: "-120%", rotate: 10, transition: { duration: 0.5, delay: 0.2, type: "spring", stiffness: 70 } },
+          }}
+          initial="outFrame"
+          animate={isVisible ? "inFrame" : "outFrame"}
+          viewport={{ once: true }}
+          className="flex justify-center h-[50%]"
+        >
+          <Image src={'/pic3.jpg'} alt="My img" width={300} height={200} className="w-auto" />
+        </motion.div>
+
+        {/* Invisible div used to trigger animations. */}
+        <motion.div
+          onViewportEnter={() => setIsVisible(true)}
+          className="absolute bg-amber-900 bottom-[10%]">
+        </motion.div>
+
       </div>
     </motion.div>
   )
@@ -166,11 +178,11 @@ function Pictures() {
 export default function Home() {
 
 
-  // useEffect(() => {
-  //   window.onbeforeunload = function () {
-  //     window.scrollTo(0, 0);
-  //   }
-  // })
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
+  })
 
   return (
     <div>
