@@ -79,17 +79,21 @@ function Pictures() {
 
   const yRange = useTransform(scrollY, [scrollThreshold, scrollThreshold + screenHeight], [0, -screenHeight]);
 
+  const text = <span
+    className="text-stone-800 font-bold sm:text-sm md:text-lg lg:text-4xl xl:text-7xl 2xl:text-10xl 3xl:text-13xl pt-0"> Captured Moments
+  </span>
 
   return (
     <motion.div
       key={screenWidth}
-      className="h-screen overflow-hidden sticky top-0 bg-amber-700"
+      className="h-screen sticky top-0 bg-amber-700"
       style={{
         y: yRange,
       }}
     >
 
       <div className="bg-amber-50 h-full" key={topOfSite ? "reset" : "no-reset"}>
+
         <motion.div
           variants={{
             outFrame: { opacity: 1, x: "-100%", y: "100%", rotate: 0 },
@@ -130,11 +134,20 @@ function Pictures() {
           <Image src={'/pic3.jpg'} alt="My img" width={300} height={200} className="w-auto" />
         </motion.div>
 
+        {/* text */}
+        <div className="absolute flex-1 flex justify-end top-[53%] right-[3%]">
+          <RevealText text={text} boxColor="black" trigger={!isVisible} offset={0.3}></RevealText>
+        </div>
+
         {/* Invisible div used to trigger animations. */}
         <motion.div
           onViewportEnter={() => setIsVisible(true)}
-          className="absolute bg-amber-900 bottom-[10%]">
+          className="absolute bottom-[10%]">
         </motion.div>
+
+        {/* Text */}
+        {/* {text} */}
+        {/* <RevealText text={text} boxColor="white"></RevealText> */}
 
       </div>
     </motion.div>
@@ -147,11 +160,11 @@ export default function Home() {
     Where Creativity Meets Vision
   </span>
 
-  useEffect(() => {
-    window.onbeforeunload = function () {
-      window.scrollTo(0, 0);
-    }
-  })
+  // useEffect(() => {
+  //   window.onbeforeunload = function () {
+  //     window.scrollTo(0, 0);
+  //   }
+  // })
 
   return (
 
@@ -159,9 +172,9 @@ export default function Home() {
     <div>
       {/* Initial page of what the user sees */}
       <div className="flex flex-col w-full h-[calc(100vh_-_68.4px)]">
-
-        <RevealText text={HomeText} boxColor="white"></RevealText>
-
+        <div className="flex-1 flex items-center justify-center">
+          <RevealText text={HomeText} boxColor="white"></RevealText>
+        </div>
       </div>
 
 
@@ -170,6 +183,7 @@ export default function Home() {
         <Pictures />
       </div>
 
+      {/* {text} */}
       {/* <div className="h-1000">
       </div> */}
 
