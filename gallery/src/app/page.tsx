@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState, useEffect } from 'react';
 import RevealText from './components/RevealText'
 import Image from 'next/image'
@@ -48,20 +48,15 @@ function Pictures() {
 
 
   const [screenWidth, setScreenWidth] = useState(0);
-  const [screenHeight, setScreenHeight] = useState(0);
   const [topOfSite, setTopOfSite] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const { scrollY } = useScroll()
 
-  const scrollThreshold = screenHeight; // Distance this follows the user
-
   // Update window size on resize
   useEffect(() => {
     setScreenWidth(window.innerWidth);
-    setScreenHeight(window.innerHeight);
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
-      setScreenHeight(window.innerHeight);
     };
 
     window.addEventListener("resize", handleResize); // Listen to resize event
@@ -78,21 +73,16 @@ function Pictures() {
     }
   })
 
-  const yRange = useTransform(scrollY, [scrollThreshold, scrollThreshold + screenHeight], [0, -screenHeight]);
-
   const text = <span
     className="text-stone-800 font-bold sm:text-sm md:text-lg lg:text-4xl xl:text-7xl 2xl:text-10xl 3xl:text-13xl pt-0"> Captured Moments
   </span>
 
   return (
-    <motion.div
+    <div
       key={screenWidth}
-      className="h-screen sticky top-0 bg-amber-700"
-      style={{
-        y: yRange,
-      }}
+      className="h-screen sticky"
     >
-      <div className="bg-amber-50 h-full" key={topOfSite ? "reset" : "no-reset"}>
+      <div className="bg-amber-50 h-full flex-col overflow-hidden" key={topOfSite ? "reset" : "no-reset"}>
 
         <motion.div
           variants={{
@@ -146,21 +136,49 @@ function Pictures() {
         </motion.div>
 
       </div>
+    </div>
+  )
+}
+
+function SignUp() {
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const signUpText = <span className="text-base sm:text-sm md:text-lg lg:text-4xl xl:text-7xl 2xl:text-10xl 3xl:text-13xl font-bold text-black">
+    Sign Up
+  </span>
+
+  useEffect(() => {
+    console.log("Count:", isVisible);
+  }, [isVisible]); // Runs every time `count` changes
+
+  return (
+    <motion.div
+      onViewportLeave={() => setIsVisible(false)}
+      className="relative h-[100%]">
+      <div className="absolute top-[50%] right-[20%]">
+        <RevealText text={signUpText} boxColor="black" trigger={!isVisible}></RevealText>
+      </div>
+
+      <motion.div
+        onViewportEnter={() => setIsVisible(true)}
+        className="absolute bottom-0">
+      </motion.div>
     </motion.div>
   )
 }
 
 export default function Home() {
 
-  const HomeText = <span className="text-base sm:text-sm md:text-lg lg:text-4xl xl:text-7xl 2xl:text-10xl 3xl:text-13xl font-bold">
+  const homeText = <span className="text-base sm:text-sm md:text-lg lg:text-4xl xl:text-7xl 2xl:text-10xl 3xl:text-13xl font-bold">
     Where Creativity Meets Vision
   </span>
 
-  useEffect(() => {
-    window.onbeforeunload = function () {
-      window.scrollTo(0, 0);
-    }
-  })
+  // useEffect(() => {
+  //   window.onbeforeunload = function () {
+  //     window.scrollTo(0, 0);
+  //   }
+  // })
 
   return (
 
@@ -169,14 +187,18 @@ export default function Home() {
       {/* Initial page of what the user sees */}
       <div className="flex flex-col w-full h-[calc(100vh_-_68.4px)]">
         <div className="flex-1 flex items-center justify-center">
-          <RevealText text={HomeText} boxColor="amber-50"></RevealText>
+          <RevealText text={homeText} boxColor="amber-50"></RevealText>
         </div>
       </div>
 
 
       {/* Images scrolling into view with text */}
-      <div className="h-1000">
+      <div className="h-[calc(100vh_-_68.4px)]">
         <Pictures />
+      </div>
+
+      <div className="h-[calc(100vh)] bg-amber-300 pt-[68.4px]">
+        <SignUp />
       </div>
 
       <ScrollForMore />

@@ -14,14 +14,14 @@ export default function RevealText({ text, boxColor = "white", trigger, offset =
         <div className="overflow-hidden h-20">
             <motion.div
                 variants={{
-                    hidden: { opacity: 1, y: 100 },
+                    hidden: { opacity: 1, y: 1000 },
                     revealed: { opacity: 1, y: 0, transition: { duration: 0.2, delay: offset } },
                 }}
                 initial="hidden"
                 animate={trigger ? "hidden" : "revealed"}
                 className="relative inline-block">
 
-                {/* White bar */}
+                {/* Bar */}
                 <motion.div
                     variants={{
                         onScreen: { x: 0, opacity: 1 },
